@@ -37,7 +37,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> refreshToken() async {
     if (AuthRepositoryImpl.authChangeNotifier.value != null) {
       final tokenResponse = await authDataSource.refreshToken(
-          AuthRepositoryImpl.authChangeNotifier.value!.refreshToken);
+          AuthRepositoryImpl.authChangeNotifier.value!.refreshToken,
+          AuthRepositoryImpl.authChangeNotifier.value!.username);
       debugPrint(
           'refresh Token is called!! new refresh token is : \n ${tokenResponse.refreshToken}');
       saveTokenToDb(tokenResponse);

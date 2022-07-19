@@ -4,7 +4,7 @@ import 'package:ecommerce_app/data/entity/token_response_entity.dart';
 abstract class AuthRemoteDataSource {
   Future<TokenResponseEntity> login(String username, String password);
   Future<TokenResponseEntity> register(String username, String password);
-  Future<TokenResponseEntity> refreshToken(String token);
+  Future<TokenResponseEntity> refreshToken(String token, String username);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -18,8 +18,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<TokenResponseEntity> refreshToken(String token) {
-    return apiService.refreshToken(token);
+  Future<TokenResponseEntity> refreshToken(String token, String username) {
+    return apiService.refreshToken(token, username);
   }
 
   @override

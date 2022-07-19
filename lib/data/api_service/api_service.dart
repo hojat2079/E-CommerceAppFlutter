@@ -23,7 +23,7 @@ abstract class ApiService {
 
   Future<TokenResponseEntity> register(String username, String password);
 
-  Future<TokenResponseEntity> refreshToken(String token);
+  Future<TokenResponseEntity> refreshToken(String token, String username);
 
   Future<AddToCartResponse> addItemToCart(int productId);
 

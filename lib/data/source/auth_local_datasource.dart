@@ -19,13 +19,17 @@ class AuthSharedPreferencesDataSource implements AuthLocalDataSource {
     final refreshToken = shP.getString('refresh_token');
     final tokenType = shP.getString('token_type');
     final expiresIn = shP.getInt('expires_in');
-    if (accessToken != null && refreshToken != null && tokenType != null) {
+    final username = shP.getString('username');
+    if (accessToken != null &&
+        refreshToken != null &&
+        tokenType != null &&
+        username != null) {
       return TokenResponseEntity(
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        tokenType: tokenType,
-        expiresIn: expiresIn!,
-      );
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          tokenType: tokenType,
+          expiresIn: expiresIn!,
+          username: username);
     }
     return null;
   }
@@ -41,15 +45,18 @@ class AuthSharedPreferencesDataSource implements AuthLocalDataSource {
         await sharedPreferences.setString('token_type', token.tokenType);
     final resultExpiresIn =
         await sharedPreferences.setInt('expires_in', token.expiresIn);
+    final resultUsername =
+        await sharedPreferences.setString('username', token.username);
     return resultToken &&
         resultRefreshToken &&
         resultTokenType &&
-        resultExpiresIn;
+        resultExpiresIn &&
+        resultUsername;
   }
 
   @override
   Future<void> signOut() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.clear();
+    await sharedPreferences.clear();
   }
 }

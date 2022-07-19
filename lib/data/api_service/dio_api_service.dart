@@ -71,15 +71,18 @@ class DioApiService with HttpResponseValidator implements ApiService {
     final response = await httpClient.post('auth/token',
         data: LoginPostEntity(username: username, password: password).toJson());
     validateResponse(response);
-    return TokenResponseEntity.fromJson(response.data as Map<String, dynamic>);
+    return TokenResponseEntity.fromJson(response.data as Map<String, dynamic>)
+      ..setUsername(username);
   }
 
   @override
-  Future<TokenResponseEntity> refreshToken(String token) async {
+  Future<TokenResponseEntity> refreshToken(
+      String token, String username) async {
     final response = await httpClient.post('auth/token',
         data: RefreshTokenPostEntity(token: token).toJson());
     validateResponse(response);
-    return TokenResponseEntity.fromJson(response.data as Map<String, dynamic>);
+    return TokenResponseEntity.fromJson(response.data as Map<String, dynamic>)
+      ..setUsername(username);
   }
 
   @override
