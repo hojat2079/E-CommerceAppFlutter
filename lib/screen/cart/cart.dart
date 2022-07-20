@@ -9,7 +9,6 @@ import 'package:ecommerce_app/screen/cart/bloc/cart_bloc.dart';
 import 'package:ecommerce_app/screen/cart/cart_item.dart';
 import 'package:ecommerce_app/screen/cart/price_info.dart';
 import 'package:ecommerce_app/screen/shipping/shipping.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

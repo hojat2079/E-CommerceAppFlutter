@@ -9,6 +9,7 @@ import 'package:ecommerce_app/data/entity/checkout_entity.dart';
 import 'package:ecommerce_app/data/entity/comment_entity.dart';
 import 'package:ecommerce_app/data/entity/create_order_params_entity.dart';
 import 'package:ecommerce_app/data/entity/create_order_result_entity.dart';
+import 'package:ecommerce_app/data/entity/history_order_entity.dart';
 import 'package:ecommerce_app/data/entity/login_post_entity.dart';
 import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/entity/refresh_token_entity.dart';
@@ -159,5 +160,14 @@ class DioApiService with HttpResponseValidator implements ApiService {
     final response = await httpClient.get('order/checkout?order_id=$orderId');
     validateResponse(response);
     return CheckoutEntity.fromJson(response.data);
+  }
+
+  @override
+  Future<List<OrderHistoryEntity>> getHistoryOrder() async {
+    final response = await httpClient.get('order/list');
+    validateResponse(response);
+    return (response.data as List)
+        .map((item) => OrderHistoryEntity.fromJson(item))
+        .toList();
   }
 }

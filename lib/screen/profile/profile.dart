@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/component/theme.dart';
 import 'package:ecommerce_app/data/repository/auth_repository.dart';
 import 'package:ecommerce_app/screen/auth/auth.dart';
+import 'package:ecommerce_app/screen/order/order.dart';
 import 'package:ecommerce_app/screen/profile/bloc/profile_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -109,14 +110,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Divider(
                     height: 1,
                   ),
-                  rowContainerItem(
-                    text: 'سوابق سفارش',
-                    iconData: CupertinoIcons.cart,
-                    onTap: () {},
-                  ),
-                  const Divider(
-                    height: 1,
-                  ),
+                  if (state is ProfileUserState)
+                    rowContainerItem(
+                      text: 'سوابق سفارش',
+                      iconData: CupertinoIcons.cart,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const OrderHistoryScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  if (state is ProfileUserState)
+                    const Divider(
+                      height: 1,
+                    ),
                   rowContainerItem(
                     text: state is ProfileUserState
                         ? 'خروج از حساب کاربری'

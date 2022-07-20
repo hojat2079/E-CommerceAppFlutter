@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/common/extension.dart';
 import 'package:ecommerce_app/component/theme.dart';
 import 'package:ecommerce_app/data/repository/order_repository.dart';
+import 'package:ecommerce_app/screen/order/order.dart';
 import 'package:ecommerce_app/screen/receipt/bloc/payment_receipt_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +152,9 @@ class PaymentReceiptScreen extends StatelessWidget {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          //todo
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const OrderHistoryScreen()));
                         },
                         child: Text(
                           'سوابق سفارش',

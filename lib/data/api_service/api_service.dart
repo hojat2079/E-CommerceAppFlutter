@@ -6,6 +6,7 @@ import 'package:ecommerce_app/data/entity/checkout_entity.dart';
 import 'package:ecommerce_app/data/entity/comment_entity.dart';
 import 'package:ecommerce_app/data/entity/create_order_params_entity.dart';
 import 'package:ecommerce_app/data/entity/create_order_result_entity.dart';
+import 'package:ecommerce_app/data/entity/history_order_entity.dart';
 import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/entity/sort_type.dart';
 import 'package:ecommerce_app/data/entity/token_response_entity.dart';
@@ -38,4 +39,6 @@ abstract class ApiService {
   Future<CreateOrderResultEntity> submitOrder(CreateOrderParamsEntity params);
 
   Future<CheckoutEntity> checkout(int orderId);
+
+  Future<List<OrderHistoryEntity>> getHistoryOrder();
 }
