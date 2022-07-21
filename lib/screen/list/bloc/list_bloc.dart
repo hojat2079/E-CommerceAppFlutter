@@ -15,15 +15,26 @@ part 'list_state.dart';
 
 class ListBloc extends Bloc<ListEvent, ListState> {
   final ProductRepository productRepository;
+  late List<ProductEntity> products;
+  late SortType sortType;
+  late ViewType viewType;
 
   ListBloc(this.productRepository) : super(ListLoading()) {
     on<ListEvent>((event, emit) async {
       if (event is ListStarted) {
         try {
           emit(ListLoading());
-          final product = await productRepository.getAllApi(sort: event.sortType);
+          sortType = event.sortType;
+          viewType = event.viewType;
+          products = await productRepository.getAllApi(sort: sortType);
+          final favorites = await productRepository.getAllDatabase();
           emit(ListSuccess(
-              event.sortType, product, sortTypeList(), event.viewType));
+            sortType,
+            products,
+            sortTypeList(),
+            viewType,
+            favorites.map((e) => e.id).toList(),
+          ));
         } catch (ex) {
           emit(
             ListError(
@@ -39,6 +50,25 @@ class ListBloc extends Bloc<ListEvent, ListState> {
                           : 'خطای نامشخص'),
             ),
           );
+        }
+      }
+      if (event is ListClickLikeButton) {
+        try {
+          if (productRepository.isExist(event.product)) {
+            productRepository.delete(event.product);
+          } else {
+            productRepository.createOrUpdate(event.product);
+          }
+          final favorites = await productRepository.getAllDatabase();
+          emit(ListSuccess(
+            sortType,
+            products,
+            sortTypeList(),
+            viewType,
+            favorites.map((e) => e.id).toList(),
+          ));
+        } catch (ex) {
+          emit(ListError(ex is CustomError ? ex : CustomError(errorCode: 500)));
         }
       }
     });

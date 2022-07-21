@@ -14,11 +14,13 @@ class ListSuccess extends ListState {
   final ViewType viewType;
   final List<ProductEntity> products;
   final List<String> sortList;
+  final List<int> favorites;
 
-  const ListSuccess(this.sortType, this.products, this.sortList, this.viewType);
+  const ListSuccess(this.sortType, this.products, this.sortList, this.viewType,
+      this.favorites);
 
   @override
-  List<Object> get props => [sortType, sortList, products];
+  List<Object> get props => [sortType, sortList, products, favorites];
 }
 
 class ListError extends ListState {

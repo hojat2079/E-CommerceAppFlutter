@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/component/theme.dart';
+import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/entity/sort_type.dart';
 import 'package:ecommerce_app/data/entity/view_type.dart';
 import 'package:ecommerce_app/data/repository/product_repository.dart';
@@ -98,9 +99,16 @@ class _ListScreenState extends State<ListScreen> {
                         ),
                         itemCount: state.products.length,
                         itemBuilder: (context, index) {
+                          final ProductEntity item = state.products[index];
                           return ProductItem(
                             product: state.products[index],
                             borderRadius: 0,
+                            isFavorite: state.favorites.contains(item.id),
+                            onLikeClicked: () {
+                              context
+                                  .read<ListBloc>()
+                                  .add(ListClickLikeButton(item));
+                            },
                           );
                         }),
                   ),

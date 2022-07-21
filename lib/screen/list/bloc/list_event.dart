@@ -16,3 +16,12 @@ class ListStarted extends ListEvent {
   @override
   List<Object?> get props => [sortType];
 }
+
+class ListClickLikeButton extends ListEvent {
+  final ProductEntity product;
+
+  const ListClickLikeButton(this.product);
+
+  @override
+  List<Object?> get props => [product];
+}
