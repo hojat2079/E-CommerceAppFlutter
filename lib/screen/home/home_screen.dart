@@ -58,6 +58,8 @@ class HomeScreen extends StatelessWidget {
                                         sortType: SortType.latest)));
                           },
                           productList: state.latestProduct,
+                          favorites:
+                              state.favoriteList.map((e) => e.id).toList(),
                         );
                       case 4:
                         return _HorizontalProductList(
@@ -70,6 +72,8 @@ class HomeScreen extends StatelessWidget {
                                         sortType: SortType.popular)));
                           },
                           productList: state.popularProduct,
+                          favorites:
+                              state.favoriteList.map((e) => e.id).toList(),
                         );
                       default:
                         return Container();
@@ -97,6 +101,7 @@ class HomeScreen extends StatelessWidget {
 class _HorizontalProductList extends StatelessWidget {
   final String title;
   final List<ProductEntity> productList;
+  final List<int> favorites;
   final Function() onTap;
 
   const _HorizontalProductList({
@@ -104,6 +109,7 @@ class _HorizontalProductList extends StatelessWidget {
     required this.title,
     required this.productList,
     required this.onTap,
+    required this.favorites,
   }) : super(key: key);
 
   @override
@@ -135,7 +141,13 @@ class _HorizontalProductList extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8, right: 8),
               itemBuilder: (context, index) {
                 final ProductEntity product = productList[index];
-                return ProductItem(product: product);
+                return ProductItem(
+                  product: product,
+                  onLikeClicked: () {
+                    context.read<HomeBloc>().add(HomeClickLikeButton(product));
+                  },
+                  isFavorite: favorites.contains(product.id),
+                );
               }),
         )
       ],

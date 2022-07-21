@@ -6,18 +6,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({
-    Key? key,
-    required this.product,
-    this.borderRadius = 0,
-    this.itemWidth = 176,
-    this.itemHeight = 189,
-  }) : super(key: key);
+  const ProductItem(
+      {Key? key,
+      required this.product,
+      this.borderRadius = 0,
+      this.itemWidth = 176,
+      this.itemHeight = 189,
+      this.onLikeClicked,
+      this.isFavorite = false})
+      : super(key: key);
 
   final ProductEntity product;
   final double borderRadius;
   final double itemWidth;
   final double itemHeight;
+  final Function()? onLikeClicked;
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +53,25 @@ class ProductItem extends StatelessWidget {
                     Positioned(
                         top: 8,
                         right: 8,
-                        child: Container(
-                          width: 32,
-                          height: 32,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              shape: BoxShape.circle),
-                          child: const Icon(
-                            CupertinoIcons.heart,
-                            size: 18,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: onLikeClicked,
+                            child: Container(
+                              width: 32,
+                              height: 32,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  shape: BoxShape.circle),
+                              child: Icon(
+                                isFavorite
+                                    ? CupertinoIcons.heart_fill
+                                    : CupertinoIcons.heart,
+                                size: 18,
+                              ),
+                            ),
                           ),
                         ))
                   ],

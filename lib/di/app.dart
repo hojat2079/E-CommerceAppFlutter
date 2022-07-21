@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce_app/common/constant.dart';
 import 'package:ecommerce_app/data/api_service/api_service.dart';
 import 'package:ecommerce_app/data/api_service/dio_api_service.dart';
+import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/repository/auth_repository.dart';
 import 'package:ecommerce_app/data/repository/banner_repository.dart';
 import 'package:ecommerce_app/data/repository/cart_repository.dart';
@@ -13,8 +14,10 @@ import 'package:ecommerce_app/data/source/auth_remote_datasource.dart';
 import 'package:ecommerce_app/data/source/banner_datasource.dart';
 import 'package:ecommerce_app/data/source/cart_datasource.dart';
 import 'package:ecommerce_app/data/source/comment_datasource.dart';
+import 'package:ecommerce_app/data/source/product_local_datasource.dart';
 import 'package:ecommerce_app/data/source/order_datasource.dart';
-import 'package:ecommerce_app/data/source/product_datasource.dart';
+import 'package:ecommerce_app/data/source/product_remote_datasource.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -55,12 +58,18 @@ final List<SingleChildWidget> providesList = [
     update: (context, bannerDataSource, bannerRepository) =>
         BannerRepositoryImpl(bannerDataSource),
   ),
-  ProxyProvider<ApiService, ProductDataSource>(
-    update: (context, api, productDataSource) => ProductRemoteDataSource(api),
+  ProxyProvider<ApiService, ProductRemoteDataSource>(
+    update: (context, api, productDataSource) =>
+        ProductRemoteDataSourceImpl(api),
   ),
-  ProxyProvider<ProductDataSource, ProductRepository>(
-    update: (context, productDataSource, productRepository) =>
-        ProductRepositoryImpl(productDataSource),
+  Provider<ProductLocalDataSource>(create: (context) {
+    return ProductLocalDataSource(
+        Hive.box<ProductEntity>(Constant.favoriteBox));
+  }),
+  ProxyProvider2<ProductRemoteDataSource, ProductLocalDataSource,
+      ProductRepository>(
+    update: (context, remoteDataSource, localDataSource, productRepository) =>
+        ProductRepositoryImpl(remoteDataSource, localDataSource),
   ),
   ProxyProvider<ApiService, OrderDataSource>(
     update: (context, api, orderDataSource) => OrderRemoteDataSource(api),

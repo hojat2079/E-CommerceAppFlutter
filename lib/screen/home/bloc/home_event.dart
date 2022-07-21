@@ -10,3 +10,12 @@ abstract class HomeEvent extends Equatable {
 class HomeStarted extends HomeEvent {}
 
 class HomeRefresh extends HomeEvent {}
+
+class HomeClickLikeButton extends HomeEvent {
+  final ProductEntity product;
+
+  const HomeClickLikeButton(this.product);
+
+  @override
+  List<Object> get props => [product];
+}

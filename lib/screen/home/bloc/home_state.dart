@@ -22,9 +22,16 @@ class HomeSuccess extends HomeState {
   final List<BannerEntity> banners;
   final List<ProductEntity> latestProduct;
   final List<ProductEntity> popularProduct;
+  final List<ProductEntity> favoriteList;
 
-  const HomeSuccess(
-      {required this.banners,
-      required this.latestProduct,
-      required this.popularProduct});
+  const HomeSuccess({
+    required this.banners,
+    required this.latestProduct,
+    required this.popularProduct,
+    required this.favoriteList,
+  });
+
+  @override
+  List<Object> get props =>
+      [favoriteList, latestProduct, banners, popularProduct];
 }

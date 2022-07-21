@@ -4,16 +4,16 @@ import 'package:ecommerce_app/data/common/http_response_validator.dart';
 import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/entity/sort_type.dart';
 
-abstract class ProductDataSource {
+abstract class ProductRemoteDataSource {
   Future<List<ProductEntity>> getAll({required SortType sort});
 
   Future<List<ProductEntity>> search({required String search});
 }
 
-class ProductRemoteDataSource implements ProductDataSource {
+class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   final ApiService apiService;
 
-  ProductRemoteDataSource(this.apiService);
+  ProductRemoteDataSourceImpl(this.apiService);
 
   @override
   Future<List<ProductEntity>> getAll({required SortType sort}) {

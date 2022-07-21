@@ -21,7 +21,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       if (event is ListStarted) {
         try {
           emit(ListLoading());
-          final product = await productRepository.getAll(sort: event.sortType);
+          final product = await productRepository.getAllApi(sort: event.sortType);
           emit(ListSuccess(
               event.sortType, product, sortTypeList(), event.viewType));
         } catch (ex) {
