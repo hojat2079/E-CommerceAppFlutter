@@ -32,7 +32,10 @@ class ProductItem extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return DetailsScreen(productEntity: product);
+              return DetailsScreen(
+                productEntity: product,
+                isFavorite: isFavorite,
+              );
             }));
           },
           borderRadius: BorderRadius.circular(borderRadius),

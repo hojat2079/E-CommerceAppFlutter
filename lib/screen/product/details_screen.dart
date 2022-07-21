@@ -6,6 +6,7 @@ import 'package:ecommerce_app/component/theme.dart';
 import 'package:ecommerce_app/component/widget/image_loading_service.dart';
 import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/repository/cart_repository.dart';
+import 'package:ecommerce_app/data/repository/product_repository.dart';
 import 'package:ecommerce_app/screen/product/bloc/product_bloc.dart';
 import 'package:ecommerce_app/screen/product/comment/comment_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,8 +15,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DetailsScreen extends StatefulWidget {
   final ProductEntity productEntity;
+  final bool isFavorite;
 
-  const DetailsScreen({Key? key, required this.productEntity})
+  const DetailsScreen(
+      {Key? key, required this.productEntity, required this.isFavorite})
       : super(key: key);
 
   @override
@@ -39,7 +42,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
       textDirection: TextDirection.rtl,
       child: BlocProvider<ProductBloc>(
         create: (context) {
-          final bloc = ProductBloc(context.read<CartRepository>());
+          final bloc = ProductBloc(
+            context.read<CartRepository>(),
+            context.read<ProductRepository>(),
+            widget.isFavorite,
+          );
           streamSubscription = bloc.stream.listen((state) {
             if (state is ProductAddItemToCartButtonSuccess) {
               showSnackBar(_scaffoldMessengerKey.currentState!,
@@ -108,14 +115,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                     ),
                     actions: [
-                      InkWell(
-                        onTap: () {},
-                        customBorder: const CircleBorder(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Icon(CupertinoIcons.heart,
-                              color: Theme.of(context).colorScheme.secondary),
-                        ),
+                      BlocBuilder<ProductBloc, ProductState>(
+                        builder: (context, state) {
+                          return InkWell(
+                            onTap: () {
+                              context.read<ProductBloc>().add(
+                                  ProductClickLikeButton(widget.productEntity));
+                            },
+                            customBorder: const CircleBorder(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Icon(
+                                  state.isFavorite
+                                      ? CupertinoIcons.heart_fill
+                                      : CupertinoIcons.heart,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
