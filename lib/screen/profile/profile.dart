@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/component/theme.dart';
 import 'package:ecommerce_app/data/repository/auth_repository.dart';
 import 'package:ecommerce_app/screen/auth/auth.dart';
+import 'package:ecommerce_app/screen/favorite/favorite.dart';
 import 'package:ecommerce_app/screen/order/order.dart';
 import 'package:ecommerce_app/screen/profile/bloc/profile_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -105,7 +106,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   rowContainerItem(
                     text: 'لیست علاقه مندی ها',
                     iconData: CupertinoIcons.heart,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return const FavoriteScreen();
+                      }));
+                    },
                   ),
                   const Divider(
                     height: 1,

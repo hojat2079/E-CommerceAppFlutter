@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/common/constant.dart';
 import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/source/local_datasource.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ProductLocalDataSource implements LocalDataSource<ProductEntity> {
@@ -43,5 +44,9 @@ class ProductLocalDataSource implements LocalDataSource<ProductEntity> {
   @override
   bool isExist(ProductEntity data) {
     return _box.containsKey(data.id);
+  }
+
+  ValueListenable<Box<ProductEntity>> getListenable() {
+    return _box.listenable();
   }
 }

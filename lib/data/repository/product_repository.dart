@@ -2,6 +2,8 @@ import 'package:ecommerce_app/data/entity/product_entity.dart';
 import 'package:ecommerce_app/data/entity/sort_type.dart';
 import 'package:ecommerce_app/data/source/product_local_datasource.dart';
 import 'package:ecommerce_app/data/source/product_remote_datasource.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class ProductRepository {
   Future<List<ProductEntity>> getAllApi({required SortType sort});
@@ -15,6 +17,8 @@ abstract class ProductRepository {
   Future<void> createOrUpdate(ProductEntity data);
 
   bool isExist(ProductEntity data);
+
+  ValueListenable<Box<ProductEntity>> getListenable();
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -51,5 +55,10 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   bool isExist(ProductEntity data) {
     return localDataSource.isExist(data);
+  }
+
+  @override
+  ValueListenable<Box<ProductEntity>> getListenable() {
+    return localDataSource.getListenable();
   }
 }
